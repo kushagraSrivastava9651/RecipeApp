@@ -1,6 +1,7 @@
 package com.example.myrecipeapp
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -24,9 +25,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
-fun RecipeScreen(modifier: Modifier=Modifier){
-    val recipeViewModel:MainViewModel= viewModel()
-    val viewState by recipeViewModel.categoriesState
+fun RecipeScreen(modifier: Modifier=Modifier,viewState:MainViewModel.RecipeState,
+                 navigateToDetail:(Category)->Unit){
+  //  val recipeViewModel:MainViewModel= viewModel()
+
     Box(modifier = Modifier.fillMaxSize()){
         when{
             viewState.loading ->{
@@ -37,7 +39,7 @@ fun RecipeScreen(modifier: Modifier=Modifier){
             }
            else->{
                //display
-               categoryScreen(viewState.list)
+               categoryScreen(viewState.list,navigateToDetail)
            }
         }
     }
@@ -46,11 +48,11 @@ fun RecipeScreen(modifier: Modifier=Modifier){
 
 
 @Composable
-fun categoryScreen(categories:List<Category>){
+fun categoryScreen(categories:List<Category>,navigateToDetail:(Category)->Unit){
     LazyVerticalGrid( GridCells.Fixed(2), modifier = Modifier.fillMaxSize()){
     items(categories) {
        category -> 
-        CategoryItem(category = category)
+        CategoryItem(category = category,navigateToDetail)
     }
     }
 
@@ -59,10 +61,13 @@ fun categoryScreen(categories:List<Category>){
 
 
 @Composable
-fun CategoryItem(category: Category){
+fun CategoryItem(category: Category,navigateToDetail:(Category)->Unit){
     Column (modifier = Modifier
         .padding(8.dp)
-        .fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
+        .fillMaxSize()
+        .clickable { navigateToDetail(category) }
+        , horizontalAlignment = Alignment.CenterHorizontally
+
     ){
         Image(painter = rememberAsyncImagePainter(model = category.strCategoryThumb)
         , contentDescription =null,

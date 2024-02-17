@@ -1,4 +1,6 @@
 package com.example.myrecipeapp
 
-class Screen {
+sealed class Screen(val route:String) {
+object RecipeScreen:Screen("recipeScreen")
+    object DetailScreen:Screen("detailScreen")
 }

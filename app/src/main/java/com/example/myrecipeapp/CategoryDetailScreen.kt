@@ -25,9 +25,7 @@ fun categoryDetailScreen(category: Category){
               Text(text = category.strCategory, textAlign = TextAlign.Center)
       Image(painter = rememberAsyncImagePainter(model = category.strCategoryThumb)
           , contentDescription ="${category.strCategory} Thumbail",
-          modifier = Modifier
-              .fillMaxSize()
-              .wrapContentSize()
+          modifier = Modifier.wrapContentSize()
               .aspectRatio(1f))
 
       Text(text = category.strCategoryDescription, textAlign = TextAlign.Justify,
